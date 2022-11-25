@@ -1,0 +1,69 @@
+{
+	"info": {
+		"_postman_id": "acaa955b-cf9a-40cd-a169-a6afa61c668f",
+		"name": "Culqi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Guardar Data",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer pk_test_4ec39228a02eb123",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"card_number\": \"4111111111111111\",\r\n    \"cvv\": \"123\",\r\n    \"expiration_month\": \"09\",\r\n    \"expiration_year\": \"2025\",\r\n    \"email\": \"alexis.pumayalla@yahoo.es\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/v2/tokens",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v2",
+						"tokens"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Recuperar data segun el token",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer pk_test_4ec39228a02eb123",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/v2/token/DMJz2QjuZLpeaO6J",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v2",
+						"token",
+						"DMJz2QjuZLpeaO6J"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
