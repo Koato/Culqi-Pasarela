@@ -9,16 +9,22 @@ import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.culqi.pasarela.dao.Cvv;
 import com.culqi.pasarela.dao.Pasarela;
-import com.culqi.pasarela.repository.ITokenRepository;
+import com.culqi.pasarela.repository.ITokenMongoRepository;
+import com.culqi.pasarela.repository.ITokenMysqlRepository;
 import com.culqi.pasarela.services.ITokenServices;
 
 @Service("iTokenServices")
 public class TokenImpl implements ITokenServices {
 
 	@Autowired
-	private ITokenRepository iTokenRepository;
+	private ITokenMysqlRepository iTokenMysqlRepository;
+
+	@Autowired
+	private ITokenMongoRepository iTokenMongoRepository;
 
 	// Rango ASCII – alfanumérico (0-9, a-z, A-Z)
 	final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -28,7 +34,7 @@ public class TokenImpl implements ITokenServices {
 		if (checkPk(pk)) {
 			return Optional.empty();
 		}
-		Optional<Pasarela> op = Optional.of(iTokenRepository.findPasarelaByToken(token));
+		Optional<Pasarela> op = Optional.of(iTokenMysqlRepository.findPasarelaByToken(token));
 		if (op.isPresent()) {
 			return op;
 		}
@@ -36,11 +42,15 @@ public class TokenImpl implements ITokenServices {
 	}
 
 	@Override
+	@Transactional
 	public Optional<String> saveToken(Pasarela pasarela, String pk) {
 		if (validateLength(pasarela) || checkPk(pk)) {
+			Cvv cvv = new Cvv();
+			cvv.setCvv(pasarela.getCvv());
+			iTokenMongoRepository.save(cvv);
 			pasarela.setCvv(null);
 			pasarela.setToken(generateToken());
-			iTokenRepository.save(pasarela);
+			iTokenMysqlRepository.save(pasarela);
 			return Optional.of(pasarela.getToken());
 		} else {
 			return Optional.empty();
@@ -112,7 +122,7 @@ public class TokenImpl implements ITokenServices {
 		} else if (isVisa || isMastercard) {
 			return cvv == 123;
 		}
-		return true;
+		return false;
 	}
 
 }

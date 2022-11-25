@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.culqi.pasarela.dao.Pasarela;
 
 @Repository
-public interface ITokenRepository extends CrudRepository<Pasarela, Long> {
+public interface ITokenMysqlRepository extends CrudRepository<Pasarela, Long> {
 
 	Pasarela findPasarelaByToken(String token);
 }
