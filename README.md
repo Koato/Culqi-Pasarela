@@ -44,7 +44,7 @@
 ### 4. Diagrama de Componentes
 En este apartado se grafican todos los componentes involucrados en el funcionamiento del recurso.
 
-![flujo](images/flujo.jpg)
+![flujo](images/flujo.JPG)
 
 ### 5.  Versiones
 En este apartado se detalla un historial de cambios o *changelog* por cada version implementada del recurso.
